@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc; /* slate-50 */
+  --foreground: #0f172a; /* slate-900 */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}

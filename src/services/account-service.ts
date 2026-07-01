@@ -114,5 +114,21 @@ export const accountService = {
       });
     }
     return apiClient.post<{ success: boolean; port?: number; message: string }>(`/accounts/${id}/interactive-login`, {});
+  },
+  
+  setSessionId: async (id: string, sessionId: string): Promise<{ success: boolean; message: string }> => {
+    if (isMockMode()) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const account = MOCK_ACCOUNTS.find(acc => acc.accountId === id);
+          if (account) {
+            account.status = 'active';
+            account.session_persistence = true;
+          }
+          resolve({ success: true, message: 'Mock Session ID injected successfully' });
+        }, 500);
+      });
+    }
+    return apiClient.post<{ success: boolean; message: string }>(`/accounts/${id}/set-session`, { sessionId });
   }
 };

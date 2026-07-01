@@ -164,13 +164,35 @@ export default function AccountsPage() {
             </button>
           )}
           {account.status === 'active' && (
-            <button
-              onClick={() => handleInteractiveLogin(account.accountId)}
-              disabled={actionLoadingId !== null}
-              className="text-xs font-semibold px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200 disabled:opacity-50"
-            >
-              Re-verify Session
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleInteractiveLogin(account.accountId)}
+                disabled={actionLoadingId !== null}
+                className="text-xs font-semibold px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200 disabled:opacity-50"
+              >
+                Re-verify Session
+              </button>
+              <button
+                onClick={async () => {
+                  const sessionId = prompt('Paste your TikTok sessionid cookie value here:');
+                  if (!sessionId) return;
+                  try {
+                    setActionLoadingId(account.accountId);
+                    const result = await accountService.setSessionId(account.accountId, sessionId);
+                    alert(result.message);
+                    await loadAccounts();
+                  } catch (err: any) {
+                    alert(`Failed to set session: ${err.message}`);
+                  } finally {
+                    setActionLoadingId(null);
+                  }
+                }}
+                disabled={actionLoadingId !== null}
+                className="text-xs font-semibold px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors border border-blue-200 disabled:opacity-50"
+              >
+                Set Session ID
+              </button>
+            </div>
           )}
           <button
             onClick={() => handleDeleteAccount(account.accountId)}

@@ -222,11 +222,21 @@ export default function AccountsPage() {
           {account.status === 'active' && (
             <div className="flex items-center gap-2">
               <button
+                onClick={() => handleStartQrLogin(account.accountId)}
+                disabled={actionLoadingId !== null || qrModalState.isOpen}
+                className="text-xs font-semibold px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg transition-colors border border-indigo-200 disabled:opacity-50 flex items-center gap-1"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                </svg>
+                QR Re-login
+              </button>
+              <button
                 onClick={() => handleInteractiveLogin(account.accountId)}
                 disabled={actionLoadingId !== null}
                 className="text-xs font-semibold px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200 disabled:opacity-50"
               >
-                Re-verify Session
+                VNC Re-verify
               </button>
               <button
                 onClick={async () => {

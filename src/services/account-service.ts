@@ -130,5 +130,38 @@ export const accountService = {
       });
     }
     return apiClient.post<{ success: boolean; message: string }>(`/accounts/${id}/set-session`, { sessionId });
+  },
+
+  startQrLogin: async (id: string): Promise<{ success: boolean; qrImageBase64: string; message: string }> => {
+    if (isMockMode()) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            success: true,
+            // A tiny transparent base64 image as mock
+            qrImageBase64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+            message: 'Mock QR Code generated. Polling will automatically succeed in 5 seconds.',
+          });
+        }, 1000);
+      });
+    }
+    return apiClient.post<{ success: boolean; qrImageBase64: string; message: string }>(`/accounts/${id}/qr-login/start`, {});
+  },
+
+  checkQrLoginStatus: async (id: string): Promise<{ success: boolean; accountId: string; status: string }> => {
+    if (isMockMode()) {
+      return new Promise((resolve) => {
+        // In mock mode, we just return 'active' to simulate a successful scan
+        setTimeout(() => {
+          const account = MOCK_ACCOUNTS.find(acc => acc.accountId === id);
+          if (account) {
+            account.status = 'active';
+            account.session_persistence = true;
+          }
+          resolve({ success: true, accountId: id, status: 'active' });
+        }, 500);
+      });
+    }
+    return apiClient.get<{ success: boolean; accountId: string; status: string }>(`/accounts/${id}/qr-login/status`);
   }
 };

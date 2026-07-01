@@ -85,8 +85,8 @@ export default function VideosPage() {
       header: 'Engagement',
       accessor: (video: Video) => (
         <div className="text-xs font-semibold text-slate-500">
-          <div>Likes: {video.likes.toLocaleString()}</div>
-          <div className="text-[10px] text-slate-400">Plays: {video.plays.toLocaleString()}</div>
+          <div>Likes: {video.likes?.toLocaleString() || 0}</div>
+          <div className="text-[10px] text-slate-400">Comments: {video.comments?.toLocaleString() || 0}</div>
         </div>
       ),
     },

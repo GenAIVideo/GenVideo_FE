@@ -135,6 +135,23 @@ export default function VideosPage() {
     },
   ];
 
+  const handleStartCrawler = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1'}/jobs/test`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'crawl', payload: { hashtag: 'AI', limit: 3 } })
+      });
+      if (res.ok) {
+        alert('Crawl job started successfully! Check the BullMQ Queues tab.');
+      } else {
+        alert('Failed to start crawl job.');
+      }
+    } catch (err) {
+      alert('Error starting crawl job.');
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Title Header */}
@@ -143,16 +160,24 @@ export default function VideosPage() {
           <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Videos Content Hub</h2>
           <p className="text-sm text-slate-500 font-medium">Manage and audit Douyin video assets at various stages of downloading, AI styling, and rendering.</p>
         </div>
-        <button
-          onClick={loadVideos}
-          disabled={loading}
-          className="text-sm font-bold px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 rounded-xl transition-all shadow-sm flex items-center gap-2 border border-slate-900"
-        >
-          <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15.07M11.35 9L15 12.65" />
-          </svg>
-          Refresh Feed
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleStartCrawler}
+            className="text-sm font-bold px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 rounded-xl transition-all shadow-sm flex items-center gap-2 border border-indigo-700"
+          >
+            Start AI Crawler
+          </button>
+          <button
+            onClick={loadVideos}
+            disabled={loading}
+            className="text-sm font-bold px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 rounded-xl transition-all shadow-sm flex items-center gap-2 border border-slate-900"
+          >
+            <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15.07M11.35 9L15 12.65" />
+            </svg>
+            Refresh Feed
+          </button>
+        </div>
       </div>
 
       {/* Videos List DataTable */}

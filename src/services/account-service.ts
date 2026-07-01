@@ -113,6 +113,6 @@ export const accountService = {
         }, 1500); // Takes longer to mimic browser spawn time
       });
     }
-    return apiClient.post<{ success: boolean; port?: number; message: string }>(`/accounts/${id}/interactive-login`);
+    return apiClient.post<{ success: boolean; port?: number; message: string }>(`/accounts/${id}/interactive-login`, {});
   }
 };

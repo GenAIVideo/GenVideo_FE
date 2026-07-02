@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-const API_BASE = 'http://localhost:3001/api/v1/automations';
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1'}/automations`;
 
 export default function AutomationsPage() {
   const [reupUrl, setReupUrl] = useState('');
